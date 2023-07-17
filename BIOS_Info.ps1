@@ -1,18 +1,5 @@
 $OutputFile = "BIOS_Info.txt"
 
-function Get-Antivirus {
-    $AntivirusKeys = Get-ChildItem "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall" |
-        Get-ItemProperty |
-        Where-Object { $_.DisplayName -like "*Antivirus*" -or $_.DisplayName -like "*Security*" } |
-        Select-Object -ExpandProperty DisplayName
-    
-    if ($AntivirusKeys) {
-        return $AntivirusKeys -join ", "
-    } else {
-        return "Antivirus is not installing."
-    }
-}
-
 # Получение информации о BIOS
 $biosInfo = Get-WmiObject -Class Win32_BIOS
 $Manufacturer = "Manufacturer: $($biosInfo.Manufacturer)"
