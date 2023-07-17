@@ -1,0 +1,10 @@
+﻿Manufacturer: American Megatrends Inc.
+Version: 1620
+Date: 20220812000000.000000+000
+Operating system: Майкрософт Windows 10 Pro
+Version: 10.0.19044
+Processor: 12th Gen Intel(R) Core(TM) i5-12400
+Number of cores: 6
+Total memory capacity: 31.75 GB
+The BIOS password is not set.
+Loading removable media is not allowed.
