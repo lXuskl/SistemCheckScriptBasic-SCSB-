@@ -1,9 +1,10 @@
-$OutputFile = "BIOS_Info.txt"
-
+$OutputFile = "System_Info.txt"
+$Emptystring = " "
 
 # Получение информации о BIOS
 Write-Host "Search for BIOS information..." -ForegroundColor Cyan
 $biosInfo = Get-WmiObject -Class Win32_BIOS
+$BIOS = "BIOS:"
 $Manufacturer = "Manufacturer: $($biosInfo.Manufacturer)"
 $Version = "Version: $($biosInfo.SMBIOSBIOSVersion)"
 $ReleaseDate = "Date: $([System.Management.ManagementDateTimeConverter]::ToDateTime($biosInfo.ReleaseDate))"
@@ -25,6 +26,20 @@ if ($bootConfig -and $bootConfig.BootSupported -and $bootConfig.MonitorBootSourc
 } else {
     $BootSourceStatus = "Loading removable media is not allowed."
 }
+
+# Получение информации о виртуализации
+Write-Host "Getting information about virtualization..." -ForegroundColor Cyan
+$VirtualizationEnabled = ""
+if ($biosInfo.VirtualizationFirmwareEnabled) {
+    $VirtualizationEnabled = "Virtualization Firmware Enabled: $($biosInfo.VirtualizationFirmwareEnabled)"
+} else {
+    $VirtualizationEnabled = "Virtualization Information Not Available"
+}
+
+# Получение информации о статусе батареи CMOS
+Write-Host "Getting information about the CMOS battery status..." -ForegroundColor Cyan
+$CMOSBatteryStatus = "CMOS Battery Status: $($biosInfo.Status)"
+
 
 # Получение информации об операционной системе
 Write-Host "Getting information about the operating system..." -ForegroundColor Cyan
@@ -51,13 +66,43 @@ if ($graphicsInfo) {
 } else {
     $GraphicsCard = "Built-in graphics"
 }
+if ($videoCard.VideoModeDescription -like "*onboard*") {
+        $Type = "Type: Integrated"
+    } else {
+        $Type = "Type: Discrete"
+    }
+
+# Получение информации о физических дисках
+Write-Host "Getting information about physical disks..." -ForegroundColor Cyan
+$NameDisks = "Disks:"
+$disks = Get-WmiObject -Class Win32_DiskDrive
+$diskInfo = foreach ($disk in $disks) {
+    $Manufacturer2 = $disk.Manufacturer
+    $Model = $disk.Model
+    $Capacity = [math]::Round($disk.Size / 1GB, 2)
+
+    [PSCustomObject]@{
+        Manufacturer = $Manufacturer2
+        Model = $Model
+        Capacity = $Capacity
+    }
+}
+
+# Получение информации о материнской плате
+$NameMotherBoard = "NameMotherBoard:"
+Write-Host "Getting information about the motherboard..." -ForegroundColor Cyan
+$motherboard = Get-WmiObject -Class Win32_BaseBoard
+$Manufacturer3 = "Manufacturer: $($motherboard.Manufacturer)"
+$Product3 = "Product: $($motherboard.Product)"
+$Version3 = "Version: $($motherboard.Version)"
+$SerialNumber = "Serial Number: $($motherboard.SerialNumber)"
+
 
 # Создание массива с информацией
-$Output = $Manufacturer, $Version, $ReleaseDate, $OSName, $OSVersion, $ProcessorName, $NumberOfCores, $TotalMemory, $PasswordStatus,$BootSourceStatus, $GraphicsCard
+$Output = $BIOS, $Manufacturer, $Version, $ReleaseDate, $PasswordStatus, $BootSourceStatus,$CMOSBatteryStatus,$VirtualizationEnabled,$Emptystring, $OSName, ,$OSVersion,$Emptystring, $ProcessorName, $NumberOfCores, $TotalMemory,$Emptystring, $GraphicsCard,$Type, $Emptystring, $NameDisks, $diskInfo, $Emptystring,$NameMotherBoard, $Manufacturer3,$Product3,$Version3,$SerialNumber
 
 # Сохранение информации в файл
 Write-Host "Saving information to a file..." -ForegroundColor Cyan
 $Output | Out-File -FilePath $OutputFile -Encoding UTF8
 
 Write-Host "The BIOS information is saved in a file: $OutputFile" 
-
