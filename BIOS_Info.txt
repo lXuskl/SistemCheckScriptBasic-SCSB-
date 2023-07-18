@@ -1,10 +1,32 @@
-﻿Manufacturer: American Megatrends Inc.
+﻿BIOS:
+Manufacturer: American Megatrends Inc.
 Version: 1620
-Date: 20220812000000.000000+000
+Date: 08/12/2022 03:00:00
+The BIOS password is not set.
+Loading removable media is not allowed.
+CMOS Battery Status: OK
+Virtualization Information Not Available
+ 
 Operating system: Майкрософт Windows 10 Pro
 Version: 10.0.19044
+ 
 Processor: 12th Gen Intel(R) Core(TM) i5-12400
 Number of cores: 6
 Total memory capacity: 31.75 GB
-The BIOS password is not set.
-Loading removable media is not allowed.
+ 
+Video card: NVIDIA GeForce RTX 3060
+Type: Discrete
+ 
+Disks:
+
+Manufacturer                      Model                 Capacity
+------------                      -----                 --------
+(Стандартные дисковые накопители) KINGSTON SNV2S1000G     931,51
+(Стандартные дисковые накопители) CT480BX500SSD1          447,13
+(Стандартные дисковые накопители) WDC WD3200AAKS-00VYA0   298,09
+ 
+NameMotherBoard:
+Manufacturer: ASUSTeK COMPUTER INC.
+Product: PRIME B660M-K D4
+Version: Rev 1.xx
+Serial Number: 221011329314890
